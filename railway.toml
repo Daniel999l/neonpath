@@ -1,4 +1,4 @@
 [build]
 builder = "nixpacks"
-buildCommand = "cd server && npm install"
-startCommand = "cd server && npm start"
+buildCommand = "cd client && npm install && npm run build && cd ../server && npm install"
+startCommand = "cd server && node src/index.js"
