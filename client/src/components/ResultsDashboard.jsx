@@ -64,3 +64,21 @@ export default function ResultsDashboard({ roadmap, onReset }) {
     </div>
   );
 }
+
+function Card({ title, items, color }) {
+  const borderClass = color === 'cyan' ? 'border-neon-cyan' : 'border-neon-pink';
+  const textClass = color === 'cyan' ? 'text-neon-cyan' : 'text-neon-pink';
+  return (
+    <div className={`bg-neon-card border border-neon-border rounded-xl p-6 ${borderClass} border-l-4`}>
+      <h3 className={`text-xl font-display ${textClass} mb-3`}>{title}</h3>
+      <ul className="space-y-2">
+        {items?.map((item, i) => (
+          <li key={i} className="flex items-start gap-2">
+            <span className={`mt-1 w-2 h-2 rounded-full bg-${color === 'cyan' ? 'cyan' : 'pink'}-400`}></span>
+            <span className="text-gray-300">{item}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
