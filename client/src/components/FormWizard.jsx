@@ -5,20 +5,45 @@ const levels = ['High School', 'Undergraduate', 'Graduate'];
 export default function FormWizard({ onGenerate, loading, error }) {
   const [step, setStep] = useState(1);
   const [form, setForm] = useState({ name: '', level: 'Undergraduate', interests: '', goals: '' });
+  const [validationError, setValidationError] = useState('');
 
-  const update = (field, value) => setForm(prev => ({ ...prev, [field]: value }));
+  const update = (field, value) => {
+    setForm(prev => ({ ...prev, [field]: value }));
+    setValidationError('');
+  };
 
-  const handleNext = () => setStep(s => Math.min(s + 1, 3));
-  const handlePrev = () => setStep(s => Math.max(s - 1, 1));
+  const handleNext = () => {
+    if (step === 1) {
+      if (!form.name.trim()) {
+        setValidationError('Please enter your name before continuing.');
+        return;
+      }
+    }
+    setError('');
+    setStep(s => Math.min(s + 1, 3));
+  };
+
+  const handlePrev = () => {
+    setValidationError('');
+    setStep(s => Math.max(s - 1, 1));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    setValidationError('');
     onGenerate(form);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter' && step < 3) {
+      e.preventDefault();
+      handleNext();
+    }
   };
 
   return (
     <div className="w-full max-w-xl px-4">
-      {/* Step Indicator - responsive */}
+      {/* Step Indicator */}
       <div className="flex items-center justify-center w-full mb-8 gap-2 md:gap-4 flex-wrap">
         {[1,2,3].map((num) => (
           <div key={num} className="flex items-center gap-1 md:gap-2">
@@ -41,7 +66,7 @@ export default function FormWizard({ onGenerate, loading, error }) {
 
       {/* Form Container */}
       <div className="bg-white rounded-xl p-6 md:p-8 border border-surface-container shadow-sm min-h-[300px] md:min-h-[400px] flex flex-col justify-between">
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} onKeyDown={handleKeyDown}>
           {step === 1 && (
             <div className="space-y-5 md:space-y-6">
               <h2 className="text-lg md:text-headline-md mb-6 md:mb-8 text-on-surface">What should we call you?</h2>
@@ -120,9 +145,9 @@ export default function FormWizard({ onGenerate, loading, error }) {
             </div>
           )}
 
-          {error && (
+          {(error || validationError) && (
             <div className="mt-4 p-3 bg-error-container border border-error rounded text-on-error-container text-xs md:text-sm">
-              {error}
+              {validationError || error}
             </div>
           )}
 
