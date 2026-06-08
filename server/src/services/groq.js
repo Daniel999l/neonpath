@@ -46,4 +46,5 @@ Return ONLY the JSON object, no markdown formatting.`;
   const raw = completion.choices[0]?.message?.content?.trim();
   if (!raw) throw new Error('Empty response from Groq');
 
-  const clean = raw.replace(/
+  let clean = raw.trim();
+  clean = clean.split('
