@@ -17,15 +17,7 @@ export default function ResultsDashboard({ roadmap, onReset }) {
           <div className="space-y-3">
             {roadmap.recommended_courses.map((course, i) => (
               <div key={i} className="border-l-4 border-neon-cyan pl-4">
-                <p className="text-white font-semibold">
-                  {course.url ? (
-                    <a href={course.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
-                      {course.course_name} ↗
-                    </a>
-                  ) : (
-                    course.course_name
-                  )}
-                </p>
+                <p className="text-white font-semibold">{course.course_name}</p>
                 <p className="text-gray-400 text-sm">{course.platform} — {course.reason}</p>
               </div>
             ))}
@@ -61,6 +53,24 @@ export default function ResultsDashboard({ roadmap, onReset }) {
           Start Over
         </button>
       </div>
+    </div>
+  );
+}
+
+function Card({ title, items, color }) {
+  const borderClass = color === 'cyan' ? 'border-neon-cyan' : 'border-neon-pink';
+  const textClass = color === 'cyan' ? 'text-neon-cyan' : 'text-neon-pink';
+  return (
+    <div className={`bg-neon-card border border-neon-border rounded-xl p-6 ${borderClass} border-l-4`}>
+      <h3 className={`text-xl font-display ${textClass} mb-3`}>{title}</h3>
+      <ul className="space-y-2">
+        {items?.map((item, i) => (
+          <li key={i} className="flex items-start gap-2">
+            <span className={`mt-1 w-2 h-2 rounded-full bg-${color === 'cyan' ? 'cyan' : 'pink'}-400`}></span>
+            <span className="text-gray-300">{item}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

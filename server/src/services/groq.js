@@ -14,13 +14,12 @@ Student profile:
 Output JSON with this structure:
 {
   "career_path": "A specific career title",
-  "summary": "A 1-2 sentence explanation written in second person (use 'you' not the student's name) of why this path suits them.",
+  "summary": "A 1-2 sentence explanation of why this path suits them.",
   "skills_to_learn": ["skill 1", "skill 2", ...],
   "recommended_courses": [
     {
       "course_name": "Name of online course or program",
       "platform": "Coursera / edX / etc",
-      "url": "Direct URL to the course page (use a real URL if possible, e.g., https://www.coursera.org/learn/... or https://www.edx.org/course/...)",
       "reason": "Why this course helps"
     }
   ],
