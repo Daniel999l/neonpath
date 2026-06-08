@@ -110,16 +110,16 @@ export default function ResultsDashboard({ roadmap, onReset }) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {roadmap.college_programs?.map((prog, i) => (
-              <div key={i} className="flex gap-4 p-5 rounded-xl bg-surface-container border border-outline-variant items-center">
+              <div key={i} className="flex gap-4 p-5 rounded-xl bg-surface-container border border-outline-variant items-start">
                 <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
                   <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
                 </div>
-                <div className="flex flex-col min-w-0">
+                <div className="flex flex-col min-w-0 flex-1">
                   <h3 className="text-headline-md text-on-surface mb-1">{prog.program_name}</h3>
                   <p className="text-body-md text-on-surface-variant mb-2">{prog.institution_examples?.join(', ')}</p>
-                  <div className="flex">
-                    <span className="bg-primary text-on-primary px-3 py-0.5 rounded-full text-label-sm truncate">{prog.relevance}</span>
-                  </div>
+                  <span className="bg-primary text-on-primary px-3 py-0.5 rounded-full text-label-sm whitespace-normal break-words">
+                    {prog.relevance}
+                  </span>
                 </div>
               </div>
             ))}
