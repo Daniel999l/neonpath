@@ -1,32 +1,32 @@
 export default function ResultsDashboard({ roadmap, onReset }) {
   return (
-    <div className="space-y-6">
-      <div className="bg-neon-card border border-neon-border rounded-xl p-8 shadow-neon-pink">
-        <h2 className="text-3xl font-display text-neon-pink mb-2">{roadmap.career_path}</h2>
-        <p className="text-gray-400 italic">{roadmap.summary}</p>
+    <div className="w-full max-w-2xl space-y-6">
+      <div className="bg-white rounded-xl p-8 border border-surface-container shadow-sm">
+        <h2 className="text-headline-md text-primary mb-2">{roadmap.career_path}</h2>
+        <p className="text-body-md text-on-surface-variant italic">{roadmap.summary}</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <Card title="Skills to Learn" items={roadmap.skills_to_learn} color="cyan" />
-        <Card title="Next Steps" items={roadmap.next_steps} color="pink" />
+        <Card title="Skills to Learn" items={roadmap.skills_to_learn} />
+        <Card title="Next Steps" items={roadmap.next_steps} />
       </div>
 
       {roadmap.recommended_courses?.length > 0 && (
-        <div className="bg-neon-card border border-neon-border rounded-xl p-6">
-          <h3 className="text-xl font-display text-neon-cyan mb-3">Recommended Courses</h3>
+        <div className="bg-white rounded-xl p-6 border border-surface-container shadow-sm">
+          <h3 className="text-headline-md text-primary mb-3">Recommended Courses</h3>
           <div className="space-y-3">
             {roadmap.recommended_courses.map((course, i) => (
-              <div key={i} className="border-l-4 border-neon-cyan pl-4">
-                <p className="text-white font-semibold">
+              <div key={i} className="border-l-4 border-primary-container pl-4">
+                <p className="text-on-surface font-semibold">
                   {course.url ? (
-                    <a href={course.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                    <a href={course.url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">
                       {course.course_name} ↗
                     </a>
                   ) : (
                     course.course_name
                   )}
                 </p>
-                <p className="text-gray-400 text-sm">{course.platform} — {course.reason}</p>
+                <p className="text-sm text-on-surface-variant">{course.platform} — {course.reason}</p>
               </div>
             ))}
           </div>
@@ -34,29 +34,29 @@ export default function ResultsDashboard({ roadmap, onReset }) {
       )}
 
       {roadmap.college_programs?.length > 0 && (
-        <div className="bg-neon-card border border-neon-border rounded-xl p-6">
-          <h3 className="text-xl font-display text-neon-pink mb-3">College Programs</h3>
+        <div className="bg-white rounded-xl p-6 border border-surface-container shadow-sm">
+          <h3 className="text-headline-md text-secondary mb-3">College Programs</h3>
           <div className="space-y-3">
             {roadmap.college_programs.map((prog, i) => (
-              <div key={i} className="border-l-4 border-neon-pink pl-4">
-                <p className="text-white font-semibold">{prog.program_name}</p>
-                <p className="text-gray-400 text-sm">{prog.institution_examples?.join(', ')}</p>
-                <p className="text-gray-500 text-xs mt-1">{prog.relevance}</p>
+              <div key={i} className="border-l-4 border-secondary-container pl-4">
+                <p className="text-on-surface font-semibold">{prog.program_name}</p>
+                <p className="text-sm text-on-surface-variant">{prog.institution_examples?.join(', ')}</p>
+                <p className="text-xs text-on-surface-variant mt-1">{prog.relevance}</p>
               </div>
             ))}
           </div>
         </div>
       )}
 
-      <div className="bg-neon-card border border-neon-border rounded-xl p-6 text-center">
-        <h3 className="text-lg font-display text-neon-cyan mb-1">Estimated Salary Range</h3>
-        <p className="text-2xl font-bold text-neon-pink">{roadmap.estimated_salary_range}</p>
+      <div className="bg-white rounded-xl p-6 border border-surface-container shadow-sm text-center">
+        <h3 className="text-body-lg text-primary mb-1">Estimated Salary Range</h3>
+        <p className="text-2xl font-bold text-secondary">{roadmap.estimated_salary_range}</p>
       </div>
 
       <div className="text-center">
         <button
           onClick={onReset}
-          className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition"
+          className="bg-primary text-on-primary px-8 py-3 rounded-lg font-bold text-label-md hover:bg-primary/90 transition-all"
         >
           Start Over
         </button>
@@ -65,17 +65,15 @@ export default function ResultsDashboard({ roadmap, onReset }) {
   );
 }
 
-function Card({ title, items, color }) {
-  const borderClass = color === 'cyan' ? 'border-neon-cyan' : 'border-neon-pink';
-  const textClass = color === 'cyan' ? 'text-neon-cyan' : 'text-neon-pink';
+function Card({ title, items }) {
   return (
-    <div className={`bg-neon-card border border-neon-border rounded-xl p-6 ${borderClass} border-l-4`}>
-      <h3 className={`text-xl font-display ${textClass} mb-3`}>{title}</h3>
+    <div className="bg-white rounded-xl p-6 border border-surface-container shadow-sm border-l-4 border-primary-container">
+      <h3 className="text-headline-md text-primary mb-3">{title}</h3>
       <ul className="space-y-2">
         {items?.map((item, i) => (
           <li key={i} className="flex items-start gap-2">
-            <span className={`mt-1 w-2 h-2 rounded-full bg-${color === 'cyan' ? 'cyan' : 'pink'}-400`}></span>
-            <span className="text-gray-300">{item}</span>
+            <span className="mt-1 w-2 h-2 rounded-full bg-primary"></span>
+            <span className="text-on-surface-variant">{item}</span>
           </li>
         ))}
       </ul>
