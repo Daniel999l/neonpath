@@ -1,14 +1,1 @@
-{
-  "name": "neonpath",
-  "private": true,
-  "scripts": {
-    "install:all": "cd server && npm install && cd ../client && npm install",
-    "dev": "concurrently \"cd server && npm run dev\" \"cd client && npm run dev\"",
-    "dev:server": "cd server && npm run dev",
-    "dev:client": "cd client && npm run dev",
-    "build": "cd client && npm run build"
-  },
-  "devDependencies": {
-    "concurrently": "^9.1.2"
-  }
-}
+"start": "cd server && npm start"
