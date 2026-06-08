@@ -47,4 +47,9 @@ Return ONLY the JSON object, no markdown formatting.`;
   if (!raw) throw new Error('Empty response from Groq');
 
   let clean = raw.trim();
-  clean = clean.split('
+  const fence = String.fromCharCode(96).repeat(3);
+  clean = clean.split(fence + 'json').join('');
+  clean = clean.split(fence).join('');
+  clean = clean.trim();
+  return JSON.parse(clean);
+}
