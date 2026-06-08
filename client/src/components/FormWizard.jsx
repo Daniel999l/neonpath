@@ -1,11 +1,16 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const levels = ['High School', 'Undergraduate', 'Graduate'];
 
-export default function FormWizard({ onGenerate, loading, error }) {
+export default function FormWizard({ onGenerate, loading, error, initialForm, onFormChange }) {
   const [step, setStep] = useState(1);
-  const [form, setForm] = useState({ name: '', level: 'Undergraduate', interests: '', goals: '' });
+  const [form, setForm] = useState(initialForm || { name: '', level: 'Undergraduate', interests: '', goals: '' });
   const [validationError, setValidationError] = useState('');
+
+  // Sync form changes to parent whenever form updates
+  useEffect(() => {
+    onFormChange(form);
+  }, [form]);
 
   const update = (field, value) => {
     setForm(prev => ({ ...prev, [field]: value }));
@@ -19,7 +24,7 @@ export default function FormWizard({ onGenerate, loading, error }) {
         return;
       }
     }
-    setError('');
+    setError?.(undefined);
     setStep(s => Math.min(s + 1, 3));
   };
 

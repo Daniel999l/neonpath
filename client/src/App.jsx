@@ -1,13 +1,57 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import LandingPage from './components/LandingPage';
 import FormWizard from './components/FormWizard';
 import ResultsDashboard from './components/ResultsDashboard';
 
+const STORAGE_KEY_ROADMAP = 'neonpath_roadmap';
+const STORAGE_KEY_PAGE = 'neonpath_page';
+const STORAGE_KEY_FORM = 'neonpath_form';
+
+function loadFromStorage(key, fallback = null) {
+  try {
+    const data = localStorage.getItem(key);
+    return data ? JSON.parse(data) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
+function saveToStorage(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // silently fail
+  }
+}
+
 export default function App() {
-  const [page, setPage] = useState('landing');
-  const [roadmap, setRoadmap] = useState(null);
+  const [page, setPage] = useState(() => loadFromStorage(STORAGE_KEY_PAGE, 'landing'));
+  const [roadmap, setRoadmap] = useState(() => loadFromStorage(STORAGE_KEY_ROADMAP, null));
+  const [wizardForm, setWizardForm] = useState(() => loadFromStorage(STORAGE_KEY_FORM, { name: '', level: 'Undergraduate', interests: '', goals: '' }));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  // Persist page changes
+  useEffect(() => {
+    saveToStorage(STORAGE_KEY_PAGE, page);
+  }, [page]);
+
+  // Persist roadmap changes
+  useEffect(() => {
+    saveToStorage(STORAGE_KEY_ROADMAP, roadmap);
+  }, [roadmap]);
+
+  // Persist wizard form changes
+  useEffect(() => {
+    saveToStorage(STORAGE_KEY_FORM, wizardForm);
+  }, [wizardForm]);
+
+  // If roadmap exists on mount, show results page
+  useEffect(() => {
+    if (roadmap && page !== 'results') {
+      setPage('results');
+    }
+  }, []);
 
   const handleGenerate = async (formData) => {
     setLoading(true);
@@ -33,6 +77,14 @@ export default function App() {
     setRoadmap(null);
     setError(null);
     setPage('landing');
+    setWizardForm({ name: '', level: 'Undergraduate', interests: '', goals: '' });
+    localStorage.removeItem(STORAGE_KEY_ROADMAP);
+    localStorage.removeItem(STORAGE_KEY_PAGE);
+    localStorage.removeItem(STORAGE_KEY_FORM);
+  };
+
+  const handleFormChange = (formData) => {
+    setWizardForm(formData);
   };
 
   return (
@@ -60,7 +112,13 @@ export default function App() {
             <h1 className="text-display-lg-mobile md:text-display-lg mb-4 text-on-surface">Craft Your Future</h1>
             <p className="text-body-lg text-on-surface-variant">Our AI mentor needs a few details to illuminate your unique professional path.</p>
           </div>
-          <FormWizard onGenerate={handleGenerate} loading={loading} error={error} />
+          <FormWizard
+            onGenerate={handleGenerate}
+            loading={loading}
+            error={error}
+            initialForm={wizardForm}
+            onFormChange={handleFormChange}
+          />
         </main>
       )}
 
