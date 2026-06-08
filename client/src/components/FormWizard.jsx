@@ -17,18 +17,20 @@ export default function FormWizard({ onGenerate, loading, error, initialForm, on
     setValidationError('');
   };
 
-  const handleNext = () => {
+  const handleNext = (e) => {
+    e.preventDefault();
     if (step === 1) {
       if (!form.name.trim()) {
         setValidationError('Please enter your name before continuing.');
         return;
       }
     }
-    setError?.(undefined);
+    setValidationError('');
     setStep(s => Math.min(s + 1, 3));
   };
 
-  const handlePrev = () => {
+  const handlePrev = (e) => {
+    e.preventDefault();
     setValidationError('');
     setStep(s => Math.max(s - 1, 1));
   };
@@ -42,7 +44,7 @@ export default function FormWizard({ onGenerate, loading, error, initialForm, on
   const handleKeyDown = (e) => {
     if (e.key === 'Enter' && step < 3) {
       e.preventDefault();
-      handleNext();
+      handleNext(e);
     }
   };
 
