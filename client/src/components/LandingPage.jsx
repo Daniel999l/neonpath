@@ -1,4 +1,8 @@
 export default function LandingPage({ onStart }) {
+  const scrollToPreview = () => {
+    document.getElementById('ai-preview')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <main className="relative min-h-screen pt-24 overflow-hidden">
       {/* Hero Section */}
@@ -21,20 +25,23 @@ export default function LandingPage({ onStart }) {
           >
             Create My Roadmap
           </button>
-          <button className="bg-white border border-outline-variant text-on-surface px-10 py-4 rounded-xl text-[18px] font-semibold hover:bg-surface-container transition-all active:scale-95">
+          <button
+            onClick={scrollToPreview}
+            className="bg-white border border-outline-variant text-on-surface px-10 py-4 rounded-xl text-[18px] font-semibold hover:bg-surface-container transition-all active:scale-95"
+          >
             View Demo
           </button>
         </div>
       </section>
 
       {/* AI Insight Panel */}
-      <section className="px-margin-mobile md:px-margin-desktop py-24 bg-white/50 border-y border-outline-variant/30">
+      <section id="ai-preview" className="px-margin-mobile md:px-margin-desktop py-24 bg-white/50 border-y border-outline-variant/30">
         <div className="max-w-4xl mx-auto rounded-3xl p-[1px] bg-outline-variant overflow-hidden">
-          <div className="bg-white rounded-3xl p-8 md:p-12 relative overflow-hidden">
-            <div className="absolute top-0 right-0 p-8">
+          <div className="bg-white rounded-3xl p-6 md:p-12 relative overflow-hidden">
+            <div className="flex justify-end mb-4 md:absolute md:top-0 md:right-0 md:p-8">
               <span className="text-label-sm text-primary uppercase font-bold tracking-widest bg-primary/10 px-3 py-1 rounded">Analysis Preview</span>
             </div>
-            <h2 className="text-[28px] leading-tight text-on-surface mb-6 font-semibold">
+            <h2 className="text-[24px] md:text-[28px] leading-tight text-on-surface mb-6 font-semibold mt-2 md:mt-12">
               &ldquo;Based on your profile, your ideal trajectory is <span className="text-primary">Quantum Computing Research</span>.&rdquo;
             </h2>
             <p className="text-body-lg text-on-surface-variant mb-8 border-l-4 border-primary/20 pl-6 italic">

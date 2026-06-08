@@ -73,11 +73,7 @@ export default function App() {
       <footer className="w-full py-8 px-margin-mobile md:px-margin-desktop flex flex-col md:flex-row justify-between items-center gap-8 bg-white border-t border-outline-variant/30">
         <div className="text-headline-md font-bold text-on-surface">NeonPath</div>
         <div className="flex flex-col md:flex-row gap-6 items-center">
-          <span className="text-body-md text-on-surface-variant">&copy; 2024 NeonPath AI.</span>
-          <div className="flex gap-4">
-            <a className="text-label-sm text-on-surface-variant hover:text-primary transition-all" href="#">Privacy Policy</a>
-            <a className="text-label-sm text-on-surface-variant hover:text-primary transition-all" href="#">Terms</a>
-          </div>
+          <span className="text-body-md text-on-surface-variant">&copy; 2026 NeonPath AI.</span>
         </div>
       </footer>
     </>

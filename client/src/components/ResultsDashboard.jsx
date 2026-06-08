@@ -59,8 +59,10 @@ export default function ResultsDashboard({ roadmap, onReset }) {
           <ul className="space-y-6">
             {roadmap.next_steps?.map((step, i) => (
               <li key={i} className="flex items-start gap-4 p-3 rounded-lg hover:bg-surface-container-low transition-colors">
-                <div className={i === 0 ? 'bg-secondary-container p-1 rounded-full flex items-center justify-center' : 'bg-surface-container-highest p-1 rounded-full flex items-center justify-center border border-outline'}>
-                  <span className={i === 0 ? 'material-symbols-outlined text-on-secondary-container text-xl font-bold' : 'material-symbols-outlined text-outline text-xl'}>
+                <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center ${
+                  i === 0 ? 'bg-secondary-container' : 'bg-surface-container-highest border border-outline'
+                }`}>
+                  <span className={i === 0 ? 'material-symbols-outlined text-on-secondary-container text-lg font-bold' : 'material-symbols-outlined text-outline text-lg'}>
                     {i === 0 ? 'check' : 'radio_button_unchecked'}
                   </span>
                 </div>
@@ -108,15 +110,15 @@ export default function ResultsDashboard({ roadmap, onReset }) {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {roadmap.college_programs?.map((prog, i) => (
-              <div key={i} className="flex gap-6 p-6 rounded-xl bg-surface-container border border-outline-variant">
-                <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-outline-variant/30 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-primary text-3xl">account_balance</span>
+              <div key={i} className="flex gap-4 p-5 rounded-xl bg-surface-container border border-outline-variant items-center">
+                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                  <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
                 </div>
-                <div className="flex flex-col justify-center">
-                  <h3 className="text-headline-md text-on-surface mb-2">{prog.program_name}</h3>
-                  <p className="text-body-md text-on-surface-variant mb-4">{prog.institution_examples?.join(', ')}</p>
+                <div className="flex flex-col min-w-0">
+                  <h3 className="text-headline-md text-on-surface mb-1">{prog.program_name}</h3>
+                  <p className="text-body-md text-on-surface-variant mb-2">{prog.institution_examples?.join(', ')}</p>
                   <div className="flex">
-                    <span className="bg-primary text-on-primary px-4 py-1 rounded-full text-label-sm">{prog.relevance}</span>
+                    <span className="bg-primary text-on-primary px-3 py-0.5 rounded-full text-label-sm truncate">{prog.relevance}</span>
                   </div>
                 </div>
               </div>
