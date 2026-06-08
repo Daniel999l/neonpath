@@ -1,4 +1,12 @@
+import { useState } from 'react';
+
 export default function ResultsDashboard({ roadmap, onReset }) {
+  const [expandedProgram, setExpandedProgram] = useState(null);
+
+  const toggleProgram = (index) => {
+    setExpandedProgram(expandedProgram === index ? null : index);
+  };
+
   return (
     <div className="w-full max-w-container-max mx-auto">
       {/* Hero Header */}
@@ -102,25 +110,35 @@ export default function ResultsDashboard({ roadmap, onReset }) {
           </div>
         </div>
 
-        {/* College Programs */}
+        {/* College Programs with accordion */}
         <div className="md:col-span-12 professional-card p-6 md:p-8 rounded-xl">
           <div className="flex items-center gap-3 mb-8 text-on-surface">
             <span className="material-symbols-outlined text-3xl">account_balance</span>
             <h2 className="text-headline-md">Top Academic Programs</h2>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="space-y-4">
             {roadmap.college_programs?.map((prog, i) => (
-              <div key={i} className="flex gap-4 p-5 rounded-xl bg-surface-container border border-outline-variant items-start">
-                <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
-                  <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
-                </div>
-                <div className="flex flex-col min-w-0 flex-1">
-                  <h3 className="text-headline-md text-on-surface mb-1">{prog.program_name}</h3>
-                  <p className="text-body-md text-on-surface-variant mb-2">{prog.institution_examples?.join(', ')}</p>
-                  <span className="bg-primary text-on-primary px-3 py-0.5 rounded-full text-label-sm whitespace-normal break-words">
-                    {prog.relevance}
+              <div key={i} className="border border-outline-variant rounded-xl overflow-hidden">
+                <button
+                  onClick={() => toggleProgram(i)}
+                  className="w-full flex items-center gap-4 p-5 bg-white hover:bg-surface-container-low transition-colors text-left"
+                >
+                  <div className="flex-shrink-0 w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center">
+                    <span className="material-symbols-outlined text-primary text-xl">account_balance</span>
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-headline-md text-on-surface">{prog.program_name}</h3>
+                    <p className="text-body-md text-on-surface-variant">{prog.institution_examples?.join(', ')}</p>
+                  </div>
+                  <span className={`material-symbols-outlined text-on-surface-variant transition-transform ${expandedProgram === i ? 'rotate-180' : ''}`}>
+                    expand_more
                   </span>
-                </div>
+                </button>
+                {expandedProgram === i && (
+                  <div className="px-5 pb-5 pl-[72px] animate-slide-down">
+                    <p className="text-body-md text-on-surface-variant">{prog.relevance}</p>
+                  </div>
+                )}
               </div>
             ))}
           </div>
