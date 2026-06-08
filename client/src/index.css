@@ -16,6 +16,18 @@ body {
   color: #004ac6;
 }
 
+.hero-pattern {
+  background-color: #f8f9ff;
+  background-image: radial-gradient(#d1d5db 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+}
+
+.professional-card {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

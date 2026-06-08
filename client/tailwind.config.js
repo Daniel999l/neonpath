@@ -83,6 +83,8 @@ export default {
         'md': '16px',
         'gutter': '24px',
         'xl': '40px',
+        'margin-mobile': '20px',
+        'margin-desktop': '64px',
       },
     },
   },
