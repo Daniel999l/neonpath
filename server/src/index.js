@@ -1,11 +1,11 @@
 import 'dotenv/config';
+import express from 'express';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import app from './app.js';
 
 const PORT = process.env.PORT || 3001;
 
-// In dev, serve the built client and handle SPA fallback (only used locally)
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const clientDistPath = path.join(__dirname, '../../client/dist');
