@@ -37,6 +37,7 @@ Output JSON with this structure:
 
 Return ONLY the JSON object, no markdown formatting.`;
 
+  console.log('[NeonPath] Calling Groq with prompt...');
   const completion = await groq.chat.completions.create({
     model: 'llama-3.3-70b-versatile',
     messages: [{ role: 'user', content: prompt }],
@@ -45,7 +46,12 @@ Return ONLY the JSON object, no markdown formatting.`;
   });
 
   const raw = completion.choices[0]?.message?.content?.trim();
-  if (!raw) throw new Error('Empty response from Groq');
+  console.log('[NeonPath] Groq raw response:', raw);
+
+  if (!raw) {
+    console.error('[NeonPath] Empty response from Groq. Full completion:', JSON.stringify(completion));
+    throw new Error('Empty response from Groq');
+  }
 
   let clean = raw.trim();
   const fence = String.fromCharCode(96).repeat(3);
