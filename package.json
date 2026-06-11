@@ -1,6 +1,7 @@
 {
   "name": "neonpath",
   "private": true,
+  "type": "module",
   "scripts": {
     "start": "node server/src/index.js",
     "install:all": "npm install && cd client && npm install",
