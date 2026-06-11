@@ -11,7 +11,6 @@ app.use(express.json());
 app.use('/api/generate', generateRoutes);
 app.get('/api/health', (req, res) => res.json({ status: 'ok' }));
 
-// Debug route — delete after confirming
 app.get('/api/debug', (req, res) => {
   res.json({
     hasGroqKey: !!process.env.GROQ_API_KEY,

@@ -4,7 +4,6 @@ import { rateLimitMiddleware } from '../lib/rateLimit.js';
 
 const router = Router();
 
-// Apply rate limit: max 10 requests per hour per IP
 router.post('/', rateLimitMiddleware(10), async (req, res) => {
   try {
     const { name, interests, goals, level } = req.body;

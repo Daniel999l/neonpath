@@ -1,4 +1,3 @@
-// In-memory rate limiter per UTC hour. Counts reset on cold start (works on Vercel).
 const counts = {};
 
 function getWindowKey() {
@@ -14,12 +13,9 @@ export function checkAndIncrement(ip, limit) {
   const windowKey = getWindowKey();
   const key = `ip:${ip}:${windowKey}`;
 
-  // Clean stale entries (older than 1 hour)
   const now = Date.now();
   for (const k of Object.keys(counts)) {
-    if (now - counts[k].timestamp > 60 * 60 * 1000) {
-      delete counts[k];
-    }
+    if (now - counts[k].timestamp > 60 * 60 * 1000) delete counts[k];
   }
 
   const entry = counts[key];
