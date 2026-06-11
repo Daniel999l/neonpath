@@ -1,35 +1,5 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const DATA_DIR = path.join(__dirname, '../../data');
-const FILE_PATH = path.join(DATA_DIR, 'rateLimits.json');
-
-function ensureDataDir() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-}
-
-function loadCounts() {
-  try {
-    ensureDataDir();
-    if (fs.existsSync(FILE_PATH)) {
-      const raw = fs.readFileSync(FILE_PATH, 'utf-8');
-      return JSON.parse(raw);
-    }
-  } catch {
-    // corrupt file, reset
-  }
-  return {};
-}
-
-function saveCounts(counts) {
-  ensureDataDir();
-  fs.writeFileSync(FILE_PATH, JSON.stringify(counts, null, 2));
-}
+// In-memory rate limiter per UTC hour. Counts reset on cold start (works on Vercel).
+const counts = {};
 
 function getWindowKey() {
   const now = new Date();
@@ -37,19 +7,17 @@ function getWindowKey() {
   const month = String(now.getUTCMonth() + 1).padStart(2, '0');
   const day = String(now.getUTCDate()).padStart(2, '0');
   const hour = String(now.getUTCHours()).padStart(2, '0');
-  return `${year}-${month}-${day}T${hour}:00Z`; // ISO hour precision
+  return `${year}-${month}-${day}T${hour}:00Z`;
 }
 
 export function checkAndIncrement(ip, limit) {
   const windowKey = getWindowKey();
   const key = `ip:${ip}:${windowKey}`;
 
-  const counts = loadCounts();
-
-  // Cleanup old entries (keep only last 48 hours)
+  // Clean stale entries (older than 1 hour)
   const now = Date.now();
   for (const k of Object.keys(counts)) {
-    if (now - counts[k].timestamp > 48 * 60 * 60 * 1000) {
+    if (now - counts[k].timestamp > 60 * 60 * 1000) {
       delete counts[k];
     }
   }
@@ -63,15 +31,10 @@ export function checkAndIncrement(ip, limit) {
 
   current++;
   counts[key] = { count: current, timestamp: now };
-  saveCounts(counts);
 
   return { allowed: true, remaining: limit - current, resetAt: windowKey };
 }
 
-/**
- * Express middleware for IP rate limiting.
- * @param {number} limit - max requests per hour per IP
- */
 export function rateLimitMiddleware(limit = 10) {
   return (req, res, next) => {
     const ip = req.ip || req.headers['x-forwarded-for']?.split(',')[0] || req.connection.remoteAddress || 'unknown';
@@ -85,7 +48,6 @@ export function rateLimitMiddleware(limit = 10) {
       });
     }
 
-    // Optionally set headers
     res.set('X-RateLimit-Limit', limit);
     res.set('X-RateLimit-Remaining', result.remaining);
     next();
